@@ -16,28 +16,31 @@ public class BlobbyController : MonoBehaviour {
 
     public float m_horizontalSpeed;
     public float m_jumpAmplitude;
+    public float m_gravity;
 
     public Text m_scoreText;
 
-    public const string m_scoreBaseText = "Player XX : ";
+    public const string c_scoreBaseText = "Player XX : ";
+
+    public const float c_ground = -2f;
 
     [HideInInspector][SerializeField]
     private string m_scorePlayerText;
     [HideInInspector][SerializeField]
-    private Rigidbody m_rigidbody;
+    private Rigidbody2D m_rigidbody;
     [HideInInspector][SerializeField]
     private Transform m_transform;
 
     private Vector3 m_initPos;
+    private bool m_flying;
 
 #if UNITY_EDITOR
     void OnValidate()
     {
-        m_scorePlayerText = m_scoreBaseText.Replace("XX", m_playerID.ToString());
+        m_scorePlayerText = c_scoreBaseText.Replace("XX", m_playerID.ToString());
         m_transform = transform;
-        m_rigidbody = GetComponent<Rigidbody>();
+        m_rigidbody = GetComponent<Rigidbody2D>();
     }
-#endif
 
     [ContextMenu("SetControlZQS")]
     void SetControlZQS()
@@ -54,6 +57,7 @@ public class BlobbyController : MonoBehaviour {
         m_right = KeyCode.K;
         m_up = KeyCode.U;
     }
+#endif
 
     void Start()
     {
@@ -72,9 +76,31 @@ public class BlobbyController : MonoBehaviour {
             m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.right;
         }
 
-        if (Input.GetKey(m_up))
+        if (Input.GetKeyDown(m_up) && !m_flying)
         {
-            m_rigidbody.AddForce(Vector3.up * m_jumpAmplitude, ForceMode.Impulse);
+            m_rigidbody.AddForce(Vector3.up * m_jumpAmplitude, ForceMode2D.Impulse);
+            m_flying = true;
+            StartCoroutine(CheckFlying());
+        }
+    }
+
+    IEnumerator CheckFlying()
+    {
+        yield return null;
+        yield return null;
+        while (m_flying)
+        {
+            yield return null;
+            if (m_transform.position.y < c_ground)
+                m_flying = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D _coll)
+    {
+        if (_coll.gameObject.layer == 0 && m_flying)
+        {
+            m_flying = false;
         }
     }
 

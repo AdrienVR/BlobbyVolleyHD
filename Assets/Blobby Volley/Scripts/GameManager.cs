@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public const int c_maxPlayers = 2;
     public const int c_maxTeams = 2;
 
+    public BallController m_ball;
     public BlobbyController[] m_players;
 
     public TeamHolder[] m_teams = new TeamHolder[c_maxTeams];
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour {
         m_teams = new TeamHolder[c_maxTeams];
         for (int i = 0; i < c_maxTeams; i++)
         {
+            m_teams[i] = new TeamHolder();
             m_teams[i].m_team = (Team)i;
         }
 
@@ -50,18 +52,23 @@ public class GameManager : MonoBehaviour {
     }
 #endif
 
-    public void Fail(Team _team)
+    public void Fail(Team _failTeam)
     {
         for (int i = 0; i < c_maxTeams; i++)
         {
-            if ((Team)i == _team)
+            if ((Team)i == _failTeam)
                 continue;
 
-            for (int j = 0; j < c_maxTeams; j++)
+            for (int j = 0; j < m_teams[i].m_teamMembers.Count; j++)
             {
                 m_teams[i].m_teamMembers[j].Score();
             }
         }
+
+        if ((int)_failTeam < 1)
+            m_ball.SetRight();
+        else
+            m_ball.SetLeft();
     }
 
     public void ResetGame()

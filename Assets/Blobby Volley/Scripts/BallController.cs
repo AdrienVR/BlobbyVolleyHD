@@ -6,8 +6,13 @@ public class BallController : MonoBehaviour
     public Vector3 m_leftPos;
     public Vector3 m_rightPos;
 
+    public float m_heightInvisible = 5;
+
+    public MeshRenderer m_indicRend;
+    public Transform m_indicator;
+
     [HideInInspector][SerializeField]
-    private Rigidbody m_rigidbody;
+    private Rigidbody2D m_rigidbody;
     [HideInInspector][SerializeField]
     private Transform m_transform;
 
@@ -15,24 +20,45 @@ public class BallController : MonoBehaviour
     void OnValidate()
     {
         m_transform = transform;
-        m_rigidbody = GetComponent<Rigidbody>();
+        m_rigidbody = GetComponent<Rigidbody2D>();
     }
 #endif
+
+    void Update()
+    {
+        if (m_transform.position.y > m_heightInvisible)
+        {
+            m_indicRend.enabled = true;
+            Vector3 pos = m_transform.position;
+            pos.y = m_indicator.position.y;
+            m_indicator.position = pos;
+        }
+        else if (m_indicRend.enabled)
+        {
+            m_indicRend.enabled = false;
+        }
+    }
+
+    void ResetBall()
+    {
+        m_rigidbody.gravityScale = 0;
+        m_rigidbody.velocity = new Vector2();
+    }
     
     public void SetLeft()
     {
+        ResetBall();
         m_transform.position = m_leftPos;
-        m_rigidbody.isKinematic = true;
     }
 
     public void SetRight()
     {
+        ResetBall();
         m_transform.position = m_rightPos;
-        m_rigidbody.isKinematic = true;
     }
     
-    void OnCollisionEnter(Collision _coll)
+    void OnCollisionEnter2D(Collision2D _coll)
     {
-        m_rigidbody.isKinematic = false;
+        m_rigidbody.gravityScale = 1;
     }
 }
