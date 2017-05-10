@@ -1,5 +1,6 @@
 ﻿
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public const int c_maxTeams = 2;
 
     public BallController m_ball;
-    public BlobbyController[] m_players;
+    public List<BlobbyController> m_players = new List<BlobbyController>(4);
 
     public int m_maxScore;
     public Text m_winText;
@@ -23,26 +24,6 @@ public class GameManager : MonoBehaviour {
 #if UNITY_EDITOR
     void OnValidate()
     {
-        m_players = FindObjectsOfType<BlobbyController>();
-
-        /*m_teams = new TeamHolder[c_maxTeams];
-        for (int i = 0; i < c_maxTeams; i++)
-        {
-            m_teams[i] = new TeamHolder();
-            m_teams[i].m_team = (Team)i;
-        }*/
-
-        for (int i = 0; i < c_maxTeams; i++)
-            m_teams[i].m_teamMembers.Clear();
-
-        for (int i = 0; i< m_players.Length; i++)
-        {
-            if (m_players[i].transform.position.x < 0)
-                m_teams[0].m_teamMembers.Add(m_players[i]);
-            else
-                m_teams[1].m_teamMembers.Add(m_players[i]);
-        }
-
         for (int i = 0; i < c_maxTeams; i++)
         {
             m_teams[i].Validate();
@@ -52,10 +33,20 @@ public class GameManager : MonoBehaviour {
 
     void Awake()
     {
+        Application.runInBackground = true;
         Instance = this;
 
         for (int i = 0; i < c_maxTeams; i++)
             m_teams[i].ResetScore();
+    }
+
+    public void RegisterPlayer(BlobbyController _newPlayer, int _teamIndex)
+    {
+        m_players.Add(_newPlayer);
+        m_teams[_teamIndex].m_teamMembers.Add(_newPlayer);
+        
+        _newPlayer.m_team = m_teams[_teamIndex].m_team;
+        _newPlayer.m_teamNumber = m_teams[_teamIndex].m_teamNumber;
     }
 
     public void Fail(Team _failTeam)
@@ -74,18 +65,18 @@ public class GameManager : MonoBehaviour {
             m_ball.SetLeft();
     }
 
-    public void TeamWins(Team _winTeam, int _teamIndex)
+    public void TeamWins(Team _winTeam, int _teamNumber)
     {
-        int looseTeam = GetOtherTeam(_teamIndex);
-        StartCoroutine(EndGameCoroutine(_teamIndex, looseTeam));
+        int looseTeam = GetOtherTeam(_teamNumber);
+        StartCoroutine(EndGameCoroutine(_teamNumber, looseTeam));
     }
 
-    int GetOtherTeam(int _teamIndex)
+    int GetOtherTeam(int _teamNumber)
     {
         for (int i = 0; i < c_maxTeams; i++)
         {
-            if (m_teams[i].m_teamIndex != _teamIndex)
-                return m_teams[i].m_teamIndex;
+            if (m_teams[i].m_teamNumber != _teamNumber)
+                return m_teams[i].m_teamNumber;
         }
         return 0;
     }
@@ -107,7 +98,7 @@ public class GameManager : MonoBehaviour {
         {
             m_teams[i].ResetScore();
         }
-        for (int i = 0; i < m_players.Length; i++)
+        for (int i = 0; i < m_players.Count; i++)
         {
             m_players[i].ResetPlayer();
         }

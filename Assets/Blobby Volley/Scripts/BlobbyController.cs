@@ -7,7 +7,7 @@ public class BlobbyController : MonoBehaviour {
     public int m_playerID;
 
     public Team m_team;
-    public int m_teamIndex;
+    public int m_teamNumber;
 
     public KeyCode m_left;
     public KeyCode m_right;
@@ -16,8 +16,7 @@ public class BlobbyController : MonoBehaviour {
     public float m_horizontalSpeed;
     public float m_jumpAmplitude;
     public float m_gravity;
-
-
+    
     public const float c_ground = -2f;
 
     public AnimationCurve m_speedInertia;
@@ -38,6 +37,7 @@ public class BlobbyController : MonoBehaviour {
         m_transform = transform;
         m_rigidbody = GetComponent<Rigidbody2D>();
     }
+#endif
 
     [ContextMenu("SetControlZQS")]
     void SetControlZQS()
@@ -54,11 +54,14 @@ public class BlobbyController : MonoBehaviour {
         m_right = KeyCode.K;
         m_up = KeyCode.U;
     }
-#endif
 
     void Start()
     {
+        m_playerID = GameManager.Instance.m_players.Count + 1;
         m_initPos = m_transform.position;
+        GameManager.Instance.RegisterPlayer(this, transform.position.x < 0 ? 0 : 1);
+        if (m_playerID > 1)
+            SetControlHUK();
     }
 
     void Update()

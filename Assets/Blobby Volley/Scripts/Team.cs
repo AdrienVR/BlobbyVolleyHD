@@ -18,7 +18,7 @@ public class TeamHolder
     public const int c_maxTeams = 2;
 
     public Team m_team;
-    public int m_teamIndex;
+    public int m_teamNumber;
     public List<BlobbyController> m_teamMembers = new List<BlobbyController>(c_maxPlayers / c_maxTeams);
 
     public Text m_scoreText;
@@ -28,19 +28,12 @@ public class TeamHolder
     
     [HideInInspector][SerializeField]
     private string m_scorePlayerText;
-
-#if UNITY_EDITOR
+    
     public void Validate()
     {
-        m_teamIndex = (int)m_team + 1;
-        m_scorePlayerText = c_scoreBaseText.Replace("XX", m_teamIndex.ToString());
-        for(int i = 0; i < m_teamMembers.Count; i++)
-        {
-            m_teamMembers[i].m_team = m_team;
-            m_teamMembers[i].m_teamIndex = m_teamIndex;
-        }
+        m_teamNumber = (int)m_team + 1;
+        m_scorePlayerText = c_scoreBaseText.Replace("XX", m_teamNumber.ToString());
     }
-#endif
 
     public void ResetScore()
     {
@@ -54,7 +47,7 @@ public class TeamHolder
 
         if (m_score >= GameManager.Instance.m_maxScore)
         {
-            GameManager.Instance.TeamWins(m_team, m_teamIndex);
+            GameManager.Instance.TeamWins(m_team, m_teamNumber);
         }
     }
 }

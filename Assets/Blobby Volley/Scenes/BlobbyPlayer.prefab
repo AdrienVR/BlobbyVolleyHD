@@ -24,6 +24,8 @@ GameObject:
   - component: {fileID: 114613533501790136}
   - component: {fileID: 50580236758596096}
   - component: {fileID: 70847422589307042}
+  - component: {fileID: 114509931417560568}
+  - component: {fileID: 114328892204669858}
   m_Layer: 8
   m_Name: BlobbyPlayer
   m_TagString: Untagged
@@ -118,6 +120,59 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!114 &114328892204669858
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294012960144750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 2
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 3
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114509931417560568
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1294012960144750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 145
+    i1: 180
+    i2: 151
+    i3: 38
+    i4: 75
+    i5: 104
+    i6: 174
+    i7: 4
+    i8: 136
+    i9: 114
+    i10: 51
+    i11: 164
+    i12: 67
+    i13: 131
+    i14: 108
+    i15: 127
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114613533501790136
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerID: 1
   m_team: 0
-  m_teamIndex: 0
+  m_teamNumber: 0
   m_left: 113
   m_right: 115
   m_up: 122

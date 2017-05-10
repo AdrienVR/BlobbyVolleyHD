@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Blobby Volley/Scenes/blobby.unity
+    guid: 44b75b033a595194982a91d55c7286d2
