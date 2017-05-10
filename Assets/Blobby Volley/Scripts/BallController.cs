@@ -11,6 +11,8 @@ public class BallController : MonoBehaviour
     public MeshRenderer m_indicRend;
     public Transform m_indicator;
 
+    public float m_maxSpeed = 2;
+
     [HideInInspector][SerializeField]
     private Rigidbody2D m_rigidbody;
     [HideInInspector][SerializeField]
@@ -37,6 +39,7 @@ public class BallController : MonoBehaviour
         {
             m_indicRend.enabled = false;
         }
+        m_rigidbody.velocity = Vector3.ClampMagnitude(m_rigidbody.velocity, m_maxSpeed);
     }
 
     void ResetBall()

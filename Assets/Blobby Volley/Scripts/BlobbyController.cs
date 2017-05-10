@@ -24,6 +24,8 @@ public class BlobbyController : MonoBehaviour {
 
     public const float c_ground = -2f;
 
+    public AnimationCurve m_speedInertia;
+
     [HideInInspector][SerializeField]
     private string m_scorePlayerText;
     [HideInInspector][SerializeField]
@@ -64,23 +66,39 @@ public class BlobbyController : MonoBehaviour {
         m_initPos = m_transform.position;
     }
 
-    // Update is called once per frame
-    void FixedUpdate ()
+    void Update()
     {
-        if (Input.GetKey(m_left))
-        {
-            m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.left;
-        }
-        if (Input.GetKey(m_right))
-        {
-            m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.right;
-        }
-
         if (Input.GetKeyDown(m_up) && !m_flying)
         {
             m_rigidbody.AddForce(Vector3.up * m_jumpAmplitude, ForceMode2D.Impulse);
             m_flying = true;
             StartCoroutine(CheckFlying());
+        }
+    }
+
+    float m_leftKeyTimer;
+    float m_rightKeyTimer;
+
+    // Update is called once per frame
+    void FixedUpdate ()
+    {
+        if (Input.GetKey(m_left))
+        {
+            m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.left * m_speedInertia.Evaluate(m_leftKeyTimer);
+            m_leftKeyTimer += Time.deltaTime;
+        }
+        else
+        {
+            m_leftKeyTimer = 0;
+        }
+        if (Input.GetKey(m_right))
+        {
+            m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.right * m_speedInertia.Evaluate(m_rightKeyTimer);
+            m_rightKeyTimer += Time.deltaTime;
+        }
+        else
+        {
+            m_rightKeyTimer = 0;
         }
     }
 
