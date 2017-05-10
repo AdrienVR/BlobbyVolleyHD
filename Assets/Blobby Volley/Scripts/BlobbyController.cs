@@ -1,26 +1,22 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BlobbyController : MonoBehaviour {
     
     [Range(1, 12)]
     public int m_playerID;
 
+    public Team m_team;
+    public int m_teamIndex;
+
     public KeyCode m_left;
     public KeyCode m_right;
     public KeyCode m_up;
-
-    public int m_score;
 
     public float m_horizontalSpeed;
     public float m_jumpAmplitude;
     public float m_gravity;
 
-    public Text m_scoreText;
-
-    public const string c_scoreBaseText = "Player XX : ";
 
     public const float c_ground = -2f;
 
@@ -39,7 +35,6 @@ public class BlobbyController : MonoBehaviour {
 #if UNITY_EDITOR
     void OnValidate()
     {
-        m_scorePlayerText = c_scoreBaseText.Replace("XX", m_playerID.ToString());
         m_transform = transform;
         m_rigidbody = GetComponent<Rigidbody2D>();
     }
@@ -124,13 +119,6 @@ public class BlobbyController : MonoBehaviour {
 
     public void ResetPlayer()
     {
-        m_score = 0;
-        m_scoreText.text = m_scorePlayerText + m_score;
         m_transform.position = m_initPos;
-    }
-
-    public void Score()
-    {
-        m_scoreText.text = m_scorePlayerText + ++m_score;
     }
 }

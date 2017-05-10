@@ -13,6 +13,8 @@ public class BallController : MonoBehaviour
 
     public float m_maxSpeed = 2;
 
+    public const int c_maxSamePlayer = 3;
+
     [HideInInspector][SerializeField]
     private Rigidbody2D m_rigidbody;
     [HideInInspector][SerializeField]
@@ -46,6 +48,7 @@ public class BallController : MonoBehaviour
     {
         m_rigidbody.gravityScale = 0;
         m_rigidbody.velocity = new Vector2();
+        m_currentTouchCount = 0;
     }
     
     public void SetLeft()
@@ -63,5 +66,23 @@ public class BallController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D _coll)
     {
         m_rigidbody.gravityScale = 1;
+
+        if (_coll.gameObject.layer != Constants.Player)
+            return;
+
+        if (_coll.gameObject == m_lastToucher)
+            m_currentTouchCount++;
+        else
+            m_currentTouchCount = 0;
+
+        m_lastToucher = _coll.gameObject;
+
+        if (m_currentTouchCount >= c_maxSamePlayer)
+        {
+            GameManager.Instance.Fail(_coll.gameObject.GetComponent<BlobbyController>().m_team);
+        }
     }
+
+    private GameObject m_lastToucher;
+    private int m_currentTouchCount;
 }
