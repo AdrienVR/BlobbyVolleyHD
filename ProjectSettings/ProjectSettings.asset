@@ -579,11 +579,16 @@ PlayerSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
+    UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 8c6b158b-56ca-4962-8a0c-4d10e81d1980
+  projectName: Blobby Volley HD (1)
+  organizationId: adrien-vernotte-1958428
   cloudEnabled: 0
   enableNewInputSystem: 0

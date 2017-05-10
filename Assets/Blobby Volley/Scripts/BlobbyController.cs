@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class BlobbyController : MonoBehaviour {
     
@@ -20,6 +21,8 @@ public class BlobbyController : MonoBehaviour {
     public const float c_ground = -2f;
 
     public AnimationCurve m_speedInertia;
+
+    public NetworkIdentity m_identity;
 
     [HideInInspector][SerializeField]
     private string m_scorePlayerText;
@@ -66,6 +69,8 @@ public class BlobbyController : MonoBehaviour {
 
     void Update()
     {
+        if (!m_identity.isLocalPlayer)
+            return;
         if (Input.GetKeyDown(m_up) && !m_flying)
         {
             m_rigidbody.AddForce(Vector3.up * m_jumpAmplitude, ForceMode2D.Impulse);
@@ -80,6 +85,8 @@ public class BlobbyController : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate ()
     {
+        if (!m_identity.isLocalPlayer)
+            return;
         if (Input.GetKey(m_left))
         {
             m_transform.position += m_horizontalSpeed * Time.deltaTime * Vector3.left * m_speedInertia.Evaluate(m_leftKeyTimer);

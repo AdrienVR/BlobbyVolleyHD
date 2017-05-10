@@ -211,6 +211,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  m_identity: {fileID: 114509931417560568}
   m_scorePlayerText: 'Player 1 : '
   m_rigidbody: {fileID: 50580236758596096}
   m_transform: {fileID: 4978773873498636}
