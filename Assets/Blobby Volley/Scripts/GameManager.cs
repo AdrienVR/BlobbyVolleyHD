@@ -76,8 +76,18 @@ public class GameManager : MonoBehaviour {
 
     public void TeamWins(Team _winTeam, int _teamIndex)
     {
-        int looseTeam = 0;
+        int looseTeam = GetOtherTeam(_teamIndex);
         StartCoroutine(EndGameCoroutine(_teamIndex, looseTeam));
+    }
+
+    int GetOtherTeam(int _teamIndex)
+    {
+        for (int i = 0; i < c_maxTeams; i++)
+        {
+            if (m_teams[i].m_teamIndex != _teamIndex)
+                return m_teams[i].m_teamIndex;
+        }
+        return 0;
     }
 
     IEnumerator EndGameCoroutine(int _winTeam, int _looseTeam)
